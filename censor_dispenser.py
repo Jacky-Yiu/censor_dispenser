@@ -152,16 +152,17 @@ def censor_before_after(email):
   return fixed_email
 
 
-print (censor_before_after(email_one))
-print("#######################################################\n")
-print (censor_before_after(email_two))
-print("#######################################################\n")
-print (censor_before_after(email_three))
-print("#######################################################\n")
-print (censor_before_after(email_four))
+#print (censor_before_after(email_one))
+#print("#######################################################\n")
+#print (censor_before_after(email_two))
+#print("#######################################################\n")
+#print (censor_before_after(email_three))
+#print("#######################################################\n")
+#print (censor_before_after(email_four))
 
+happy = open("happy_prince.txt", "r").read()
+print (censor(happy,"happy prince"))  
 
-  
   
 
 
