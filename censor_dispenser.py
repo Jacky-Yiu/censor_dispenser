@@ -30,13 +30,15 @@ def no_word(string): # maintain before and after lenght
     block.append("*")
   return "".join(block)
 
+
+puncuation=[",",".","!"]
+pronouns=["he", "she", "it"]
 #=========================================================
 def censor(email,censor):
   splited_txt_lst = split_word(email)
   splited_censor_lst = censor.split(" ")
 
   #print(splited_txt_lst)
-
   for i in range(len(splited_txt_lst)):
     for k in range(len(splited_txt_lst[i])):
       counter=0
@@ -47,18 +49,12 @@ def censor(email,censor):
           if splited_txt_lst[i][k+m].lower() == splited_censor_lst[m]:
             #print("found it")
             counter+=1
-          if (splited_txt_lst[i][k+m].find(',') != -1): 
-            splited_txt_lst[i][k+m] = splited_txt_lst[i][k+m].strip(",")
-            if splited_txt_lst[i][k+m].lower() == splited_censor_lst[m]:
-              counter+=1
-            splited_txt_lst[i][k+m] = "".join([splited_txt_lst[i][k+m],","])
-
-          elif (splited_txt_lst[i][k+m].find('.') != -1): 
-            splited_txt_lst[i][k+m] = splited_txt_lst[i][k+m].strip(".")
-            if splited_txt_lst[i][k+m].lower() == splited_censor_lst[m]:
-              counter+=1
-            splited_txt_lst[i][k+m] = "".join([splited_txt_lst[i][k+m],"."])
-
+          for x in puncuation:
+            if (splited_txt_lst[i][k+m].find(x) != -1): 
+              splited_txt_lst[i][k+m] = splited_txt_lst[i][k+m].strip(x)
+              if splited_txt_lst[i][k+m].lower() == splited_censor_lst[m]:
+                counter+=1
+              splited_txt_lst[i][k+m] = "".join([splited_txt_lst[i][k+m],x])
           else: 
             continue 
         #exclue index error
@@ -73,6 +69,9 @@ def censor(email,censor):
           splited_txt_lst[i][k+m]= splited_txt_lst[i][k+m].replace(splited_censor_lst[m], block_word(splited_censor_lst[m]))
 
   fixed_email = join_string(splited_txt_lst)
+
+  if censor in pronouns:
+    fixed_email = fixed_email.replace(censor+"'s", block_word(censor))
   return fixed_email
 
 #print(censor(email_one,"learning algorithms"))
@@ -80,8 +79,10 @@ def censor(email,censor):
 #==============================================================
 def censor_list(email, lst):
   fixed_email = email
+  
   for item in lst:
     fixed_email=censor(fixed_email,item)
+    fixed_email=censor(fixed_email,item+"s")
   return fixed_email
 
 proprietary_terms = ["she", "personality matrix", "sense of self", "self-preservation", "learning algorithm", "her", "herself"]
@@ -115,11 +116,12 @@ def censor_more_than_twice(email, lst):
         except IndexError:
           continue
     #counter check
-    print(negative_word,counter)
+    #print(negative_word,counter)
     if counter > 1:
       fixed_mail=censor(fixed_mail,negative_word)
     
   fixed_mail=censor_list(fixed_mail, proprietary_terms)
+
   return fixed_mail
 
 negative_words = ["concerned", "behind", "danger", "dangerous", "alarming", "alarmed", "out of control", "help", "unhappy", "bad", "upset", "awful", "broken", "damage", "damaging", "dismal", "distressed", "distressed", "concerning", "horrible", "horribly", "questionable"]
@@ -150,7 +152,12 @@ def censor_before_after(email):
   return fixed_email
 
 
-
+print (censor_before_after(email_one))
+print("#######################################################\n")
+print (censor_before_after(email_two))
+print("#######################################################\n")
+print (censor_before_after(email_three))
+print("#######################################################\n")
 print (censor_before_after(email_four))
 
 
